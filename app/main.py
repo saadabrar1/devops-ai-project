@@ -1,21 +1,11 @@
 from fastapi import FastAPI
-import random
-import time
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
 
 @app.get("/")
-def home():
-    return {"message": "DevOps + AIOps project running"}
+def read_root():
+    return {"message": "DevOps AI App Running"}
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-@app.get("/metrics")
-def metrics():
-    return {
-        "cpu_usage": random.randint(10, 90),
-        "memory_usage": random.randint(20, 80),
-        "response_time": round(random.uniform(0.1, 1.5), 2)
-    }
+# THIS LINE SHOULD BE PRESENT
+Instrumentator().instrument(app).expose(app)
